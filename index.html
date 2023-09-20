@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Digital Clock</title>
+    <link
+      rel="stylesheet"
+      href="https://unicons.iconscout.com/release/v4.0.8/css/line.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="digital-clock">
+      <i class="uil uil-ellipsis-v dot-menu-btn" id="active-menu"></i>
+      <ul class="dot-menu" id="active-menu">
+        <li class="menu-item">
+          <span class="clock-format-text" id="active-menu">24-hour format</span>
+          <div
+            class="format-switch-btn"
+            id="active-menu"
+            data-format="12"
+          ></div>
+        </li>
+      </ul>
+      <div class="time">
+        <span class="hours">00</span>
+        <span class="dots">:</span>
+        <span class="minutes">00</span>
+        <div class="right-side">
+          <span class="period">AM</span>
+          <span class="seconds">00</span>
+        </div>
+      </div>
+      <div class="calendar">
+        <span class="month-name">Month</span>,
+        <span class="day-name">Day</span>
+        <span class="day-number">00</span>
+        <!-- <span class="year">0000</span> -->
+      </div>
+    </div>
+    <script>
+      //JavaScript for switch clock format
+      const formatSwitchBtn = document.querySelector(".format-switch-btn");
+
+      formatSwitchBtn.addEventListener("click", () => {
+        formatSwitchBtn.classList.toggle("active");
+
+        var formatValue = formatSwitchBtn.getAttribute("data-format");
+
+        if (formatValue == "12") {
+          formatSwitchBtn.setAttribute("data-format", "24");
+        } else {
+          formatSwitchBtn.setAttribute("data-format", "12");
+        }
+      });
+
+      //Get current time in javascript
+      function clock() {
+        var today = new Date();
+
+        var hours = today.getHours();
+        var minutes = today.getMinutes();
+        var seconds = today.getSeconds();
+        let period = "AM";
+
+        //Set the time period(AM/PM)
+        if (hours >= 12) {
+          period = "PM";
+        }
+
+        //Set the 12-hour clock format
+        var formatValue = formatSwitchBtn.getAttribute("data-format");
+        if (formatValue === "12") {
+          hours = hours > 12 ? hours % 12 : hours;
+        }
+
+        //Add 0 to the beginning of the numbers if they are less than 10
+        hours = hours < 10 ? "0" + hours : hours;
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        document.querySelector(".hours").innerHTML = hours;
+        document.querySelector(".minutes").innerHTML = minutes;
+        document.querySelector(".seconds").innerHTML = seconds;
+        document.querySelector(".period").innerHTML = period;
+      }
+
+      var updateTime = setInterval(clock, 1000);
+
+      //Get current date in javascript
+      var today = new Date();
+      const dayNumber = today.getDate();
+      const year = today.getFullYear();
+      const dayName = today.toLocaleString("default", { weekday: "long" });
+      const monthName = today.toLocaleString("default", { month: "long" });
+
+      document.querySelector(".month-name").innerHTML = monthName;
+      document.querySelector(".day-name").innerHTML = dayName;
+      document.querySelector(".day-number").innerHTML = dayNumber;
+      // document.querySelector(".year").innerHTML = year;
+
+      //Javascript for dot menu toggle
+      const dotMenuBtn = document.querySelector(".dot-menu-btn");
+      const dotMenu = document.querySelector(".dot-menu");
+
+      dotMenuBtn.addEventListener("click", () => {
+        dotMenu.classList.toggle("active");
+      });
+
+      document.addEventListener("click", (e) => {
+        if (e.target !== dotMenuBtn && e.target !== dotMenu) {
+          dotMenu.classList.remove("active");
+        }
+      });
+
+      // document.addEventListener("click", (e) => {
+      //   if (e.target.id !== "active-menu") {
+      //     dotMenu.classList.remove("active");
+      //   }
+      // });
+    </script>
+  </body>
+</html>
